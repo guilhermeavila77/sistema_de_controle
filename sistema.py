@@ -5,131 +5,118 @@ import plotly.express as px
 
 # Variaveis globais
 
-caminho = "/content/drive/MyDrive/Curso analise de dados/Base de de dados.xlsx"
+caminho = "Base de de dados (1).xlsx"
 tabela = pd.read_excel(caminho)
 
+nome = input(str('Nome: '))
+estado = input(str('Estado: '))
+pais = input(str('Pais: '))
+faturamento = input('Faturamento: ')
+despesas = input('Despesas: ')
+data = input(str('Data: '))
 
-def add_linha():
-    nome = input(str('Nome: '))
-    estado = input(str('Estado: '))
-    pais = input(str('Pais: '))
-    faturamento = input('Faturamento: ')
-    despesas = input('Despesas: ')
-    data = input(str('Data: '))
+# Formata as variaveis inteiras
+faturamento = int(faturamento)
+despesas = int(despesas)
 
-    # Formata as variaveis inteiras
-    faturamento = int(faturamento)
-    despesas = int(despesas)
+# Adiciona a linha
+atualizartabela = load_workbook(caminho)
+aba_ativa = atualizartabela.active
+lucro = 0
+aba_ativa.append([nome, estado, pais, faturamento, despesas, lucro, data])
+# Salva a planilha e atualizar o data frame
+atualizartabela.save(caminho)
+tabela = pd.read_excel(caminho)
 
-    # Adiciona a linha
-    atualizartabela = load_workbook(caminho)
-    aba_ativa = atualizartabela.active
-    lucro = 0
-    aba_ativa.append([nome, estado, pais, faturamento, despesas, lucro, data])
-    # Salva a planilha e atualizar o data frame
-    atualizartabela.save(caminho)
-    tabela = pd.read_excel(caminho)
+tabela["LUCRO"] = tabela["FATURAMENTO"] - tabela["DESPESAS"]
+# Atualizar e salvar o data frame
+tabela.to_excel(caminho, index=False)
+tabela = pd.read_excel(caminho)
 
+# Altera uma informação solicitada
 
-def calc_lucro():
-    tabela["LUCRO"] = tabela["FATURAMENTO"] - tabela["DESPESAS"]
-    # Atualizar e salvar o data frame
-    tabela.to_excel(caminho, index=False)
-    tabela = pd.read_excel(caminho)
+# Pede a coluna e a linha
+# Pede a coluna e passar o nome
+alteracaocolumn = input('Coluna de alteração: ')
+# Pede a linha e passar o numero da linha
+alteracaorow = input('Linha de alteração: ')
+# Formata a linha
+alteracaorow = int(alteracaorow)
+# Pede a alteração
+newvalue = input('Alteração: ')
+tabela.loc[alteracaorow, alteracaocolumn] = newvalue
+# Salva a planilha
+tabela.to_excel(caminho, index=False)
+tabela = pd.read_excel(caminho)
 
+# Escluir uma linha
 
-def alteracao():
+# Pede e formata a linha que deseja ser excluida
+excluir = input('Linha para excluir: ')
+excluir = int(excluir)
 
-    # Altera uma informação solicitada
+# Mostra a linha excluida
+print(excluir)
 
-    # Pede a coluna e a linha
-    # Pede a coluna e passar o nome
-    alteracaocolumn = input('Coluna de alteração: ')
-    # Pede a linha e passar o numero da linha
-    alteracaorow = input('Linha de alteração: ')
-    # Formata a linha
-    alteracaorow = int(alteracaorow)
-    # Pede a alteração
-    newvalue = input('Alteração: ')
-    tabela.loc[alteracaorow, alteracaocolumn] = newvalue
-    # Salva a planilha
-    tabela.to_excel(caminho, index=False)
-    tabela = pd.read_excel(caminho)
+# Exclui a linha da tabela
+tabela = tabela.drop(excluir)
 
+# Salva a tabela
+tabela.to_excel(caminho, index=False)
+tabela = pd.read_excel(caminho)
 
-def excluir():
-    # Escluir uma linha
+# Cria as variaveis utilizadas para a busca e as "seta" como zero
 
-    # Pede e formata a linha que deseja ser excluida
-    excluir = input('Linha para excluir: ')
-    excluir = int(excluir)
+# As buscas são
 
-    # Mostra a linha excluida
-    print(excluir)
+# Maior faturamento, maior despesa, maior lucro
 
-    # Exclui a linha da tabela
-    tabela = tabela.drop(excluir)
+fatanterior = 0
+despanterior = 0
+lucroanterior = 0
 
-    # Salva a tabela
-    tabela.to_excel(caminho, index=False)
-    tabela = pd.read_excel(caminho)
+# Laços de repetição que procuram as informações
+# A cada linha ele verifica se o valor da nova linha é maior que a linha anterior
+# Caso seja, esse valor é armazenado
+# Fazendo assim no final mostrar o maior valor
 
+for faturamento in tabela.itertuples():
+    fat = faturamento.FATURAMENTO
+    if fat > fatanterior:
+        fatanterior = fat
+        namefat = faturamento.NOME
 
-def mostar_resultados():
-    # Cria as variaveis utilizadas para a busca e as "seta" como zero
+for despesas in tabela.itertuples():
+    desp = despesas.DESPESAS
+    if desp > despanterior:
+        despanterior = desp
+        namedesp = despesas.NOME
 
-    # As buscas são
+for lucro in tabela.itertuples():
+    luc = lucro.LUCRO
+    if luc > lucroanterior:
+        lucroanterior = luc
+        namelucro = lucro.NOME
 
-    # Maior faturamento, maior despesa, maior lucro
+# Mostar os resultados
 
-    fatanterior = 0
-    despanterior = 0
-    lucroanterior = 0
+# Setar os textos
 
-    # Laços de repetição que procuram as informações
-    # A cada linha ele verifica se o valor da nova linha é maior que a linha anterior
-    # Caso seja, esse valor é armazenado
-    # Fazendo assim no final mostrar o maior valor
+txtfaturamento = "O maior faturamento foi do "
+txtdespesas = "A maior despesa foi do "
+txtlucro = "O maior lucro foi do "
+com = " com "
 
-    for faturamento in tabela.itertuples():
-        fat = faturamento.FATURAMENTO
-        if fat > fatanterior:
-            fatanterior = fat
-            namefat = faturamento.NOME
+print(f'{txtfaturamento}{namefat}{com}{fatanterior}')
+print(f'{txtdespesas}{namedesp}{com}{despanterior}')
+print(f'{txtlucro}{namelucro}{com}{lucroanterior}')
 
-    for despesas in tabela.itertuples():
-        desp = despesas.DESPESAS
-        if desp > despanterior:
-            despanterior = desp
-            namedesp = despesas.NOME
+# Plotar os graficos
 
-    for lucro in tabela.itertuples():
-        luc = lucro.LUCRO
-        if luc > lucroanterior:
-            lucroanterior = luc
-            namelucro = lucro.NOME
+# Relação ESTADO x FATURAMENTO
+grafico = px.line(tabela, x="ESTADO", y="FATURAMENTO")
+grafico.show()
 
-    # Mostar os resultados
-
-    # Setar os textos
-
-    txtfaturamento = "O maior faturamento foi do "
-    txtdespesas = "A maior despesa foi do "
-    txtlucro = "O maior lucro foi do "
-    com = " com "
-
-    print(f'{txtfaturamento}{namefat}{com}{fatanterior}')
-    print(f'{txtdespesas}{namedesp}{com}{despanterior}')
-    print(f'{txtlucro}{namelucro}{com}{lucroanterior}')
-
-
-def graficos():
-    # Plotar os graficos
-
-    # Relação ESTADO x FATURAMENTO
-    grafico = px.line(tabela, x="ESTADO", y="FATURAMENTO")
-    grafico.show()
-
-    # Relação ESTADO X LUCRO
-    grafico = px.bar(tabela, x="ESTADO", y="LUCRO")
-    grafico.show()
+# Relação ESTADO X LUCRO
+grafico = px.bar(tabela, x="ESTADO", y="LUCRO")
+grafico.show()
