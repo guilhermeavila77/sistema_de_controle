@@ -4,6 +4,8 @@ import PySimpleGUI as sg
 
 global caminho
 caminho = "Base de de dados (1).xlsx"
+global tabela
+tabela = pd.read_excel(caminho)
 
 
 def tela_add():
@@ -56,8 +58,10 @@ def tela_add():
 
 
 def table():
+
     layoutTable = [
         [sg.Text("LISTA DE CLIENTES")],
+        [sg.InputOptionMenu(tabela["NOME"])],
         [sg.Button("VOLTAR")]
     ]
 
