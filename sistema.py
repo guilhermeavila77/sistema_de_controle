@@ -1,7 +1,10 @@
 from tela_add import *
 import PySimpleGUI as sg
 
-layout = [
+# cria a interface grafica
+sg.theme('LightBrown6')
+
+collun_center = [
     [sg.Text("SISTEMA DE CONTROLE")],
     [sg.Text("graficoFat"), sg.Text("graficoLuc")],
     [sg.Button("ADD CLIENTE"), sg.Button("ALTERAR INFORMAÇÃO"),
@@ -9,6 +12,10 @@ layout = [
     [sg.Text("maiorfaturamento"), sg.Text(
         "maiorfaturamento"), sg.Text("maiorfaturamento")]
 ]
+
+layout = [[sg.VPush()],
+          [sg.Push(), sg.Column(collun_center, element_justification='c'), sg.Push()],
+          [sg.VPush()]]
 
 janela = sg.Window("SISTEMA DE CONTROLE", layout)
 
