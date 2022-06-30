@@ -46,6 +46,7 @@ def tela_add():
             tabela.to_excel("Base de de dados (1).xlsx", index=False)
             tabela = pd.read_excel("Base de de dados (1).xlsx")
 
-            # pop  out   e   fechaar a janela   e  tentar aa variavel caminho de novo
+            sg.popup('CLIENTE ADICIONADO!')
+            janelaAdd.close()
 
     janelaAdd.close()
