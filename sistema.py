@@ -87,4 +87,7 @@ while True:
     if evento == "EXCLUIR CLIENTE":
         table()
 
+    if evento == "ALTERAR INFORMAÇÃO":
+       alt()
+
 janela.close()

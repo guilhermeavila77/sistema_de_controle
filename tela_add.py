@@ -8,6 +8,8 @@ global tabela
 tabela = pd.read_excel(caminho)
 global lista 
 lista = tabela['NOME']
+global infos
+infos = ['NOME', 'ESTADO', 'PAIS', 'FATURAMENTO', 'DESPESAS', 'DATA']
 
 
 
@@ -96,3 +98,45 @@ def table():
             
 
     janelaTable.close()
+
+def alt():
+    contAlt = 0
+    layoutAlt = [
+        [sg.Text('ALTERAR INFORMAÇÃO')],
+        [sg.InputText(key='linhaAlt'),sg.Text("CLIENTE DA ALTERAÇÃO")],
+        [sg.InputOptionMenu(values=infos, default_value='COLUNA', size=(10,10),key='altcolum'),sg.Text("INFORMAÇÃO DA ALTERAÇÃO")],
+        [sg.InputText(key='alt'),sg.Text("ALTERAÇÃO")],
+        [sg.Button('ALTERAR')]
+    ]
+
+    janelaAlt = sg.Window("LISTA CLIENTES", layoutAlt)
+
+    while True:
+        evento, valores = janelaAlt.read()
+        if evento == sg.WIN_CLOSED:
+            break
+
+        if evento == "ALTERAR":
+            tabela = pd.read_excel(caminho)
+            linhaAlt = valores['linhaAlt']
+            for verificar in tabela.itertuples():
+                altCliente = verificar.NOME
+                contAlt = contAlt + 1
+                if altCliente == linhaAlt:
+                    break
+            
+            colunaAlteração = valores['altcolum']      
+            print(contAlt)      
+            contAlt = contAlt - 1
+            print(contAlt)
+            new = valores['alt']
+            if colunaAlteração == "FATURAMENTO" or colunaAlteração == "DESPESAS":
+                new = int(new)
+            tabela.loc[contAlt,colunaAlteração] = new
+            # Salva a tabela
+            tabela.to_excel(caminho, index=False)
+            tabela = pd.read_excel(caminho)
+            sg.popup('VALOR ALTERADO!')
+            janelaAlt.close()            
+
+    janelaAlt.close()
