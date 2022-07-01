@@ -61,10 +61,10 @@ def tela_add():
 
 
 def table():
-
+    cont = 0
     layoutTable = [
         [sg.Text("LISTA DE CLIENTES")],
-        [sg.InputOptionMenu(values=lista, default_value='CLIENTE', size=(4,10),key='excluir')],
+        [sg.InputOptionMenu(values=lista, default_value='CLIENTE', size=(10,10),key='excluir')],
         [sg.Button("EXCLUIR")],
         [sg.Button("VOLTAR")]
     ]
@@ -77,16 +77,22 @@ def table():
             break
 
         if evento == "EXCLUIR":
+            tabela = pd.read_excel(caminho)
             clienteExcluir = valores['excluir']
             for cliente in tabela.itertuples():
                 rodagemCliente = cliente.NOME
+                cont = cont + 1
                 if rodagemCliente == clienteExcluir:
-                    linhaExcluir = rodagemCliente.index
+                    break
             
             # Exclui a linha da tabela
-            tabela = tabela.drop(linhaExcluir)
+            cont = cont - 1
+            tabela = tabela.drop(cont)
             # Salva a tabela
             tabela.to_excel(caminho, index=False)
             tabela = pd.read_excel(caminho)
+            sg.popup('CLIENTE EXCLUIDO!')
+            janelaTable.close()
+            
 
     janelaTable.close()

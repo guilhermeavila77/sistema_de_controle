@@ -66,7 +66,7 @@ collun_center = [
     [sg.Text("SISTEMA DE CONTROLE")],
     [sg.Text("graficoFat"), sg.Text("graficoLuc")],
     [sg.Button("ADD CLIENTE"), sg.Button("ALTERAR INFORMAÇÃO"),
-     sg.Button("EXCLUIR CLIENTE"), sg.Button("LISTA CLIENTE")],
+     sg.Button("EXCLUIR CLIENTE")],
     [sg.Text(txtFat), sg.Text(txtDesp), sg.Text(txtLuc)]
 ]
 
@@ -84,7 +84,7 @@ while True:
     if evento == "ADD CLIENTE":
         tela_add()
 
-    if evento == "LISTA CLIENTE":
+    if evento == "EXCLUIR CLIENTE":
         table()
 
 janela.close()
