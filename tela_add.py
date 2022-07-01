@@ -6,6 +6,9 @@ global caminho
 caminho = "Base de de dados (1).xlsx"
 global tabela
 tabela = pd.read_excel(caminho)
+global lista 
+lista = tabela['NOME']
+
 
 
 def tela_add():
@@ -61,7 +64,8 @@ def table():
 
     layoutTable = [
         [sg.Text("LISTA DE CLIENTES")],
-        [sg.InputOptionMenu(tabela["NOME"])],
+        [sg.InputOptionMenu(values=lista, default_value='CLIENTE', size=(4,10),key='excluir')],
+        [sg.Button("EXCLUIR")],
         [sg.Button("VOLTAR")]
     ]
 
@@ -71,5 +75,18 @@ def table():
         evento, valores = janelaTable.read()
         if evento == sg.WIN_CLOSED or evento == "VOLTAR":
             break
+
+        if evento == "EXCLUIR":
+            clienteExcluir = valores['excluir']
+            for cliente in tabela.itertuples():
+                rodagemCliente = cliente.NOME
+                if rodagemCliente == clienteExcluir:
+                    linhaExcluir = rodagemCliente.index
+            
+            # Exclui a linha da tabela
+            tabela = tabela.drop(linhaExcluir)
+            # Salva a tabela
+            tabela.to_excel(caminho, index=False)
+            tabela = pd.read_excel(caminho)
 
     janelaTable.close()
