@@ -64,11 +64,17 @@ def tela_add():
 
 def table():
     cont = 0
+    btn_layout = [
+        [sg.Button("EXCLUIR"),sg.Button("VOLTAR")]
+    ]
+    main_layout = [
+        [sg.Text("EXCLUIR CLIENTE")],
+        [sg.InputOptionMenu(values=lista, default_value='CLIENTE', size=(10,10),key='excluir')]
+    ]
     layoutTable = [
-        [sg.Text("LISTA DE CLIENTES")],
-        [sg.InputOptionMenu(values=lista, default_value='CLIENTE', size=(10,10),key='excluir')],
-        [sg.Button("EXCLUIR")],
-        [sg.Button("VOLTAR")]
+        [sg.Column(main_layout, element_justification='c')],
+        [sg.Column(btn_layout, element_justification='c')]
+
     ]
 
     janelaTable = sg.Window("LISTA CLIENTES", layoutTable)
@@ -103,13 +109,13 @@ def alt():
     contAlt = 0
     layoutAlt = [
         [sg.Text('ALTERAR INFORMAÇÃO')],
-        [sg.InputText(key='linhaAlt'),sg.Text("CLIENTE DA ALTERAÇÃO")],
-        [sg.InputOptionMenu(values=infos, default_value='COLUNA', size=(10,10),key='altcolum'),sg.Text("INFORMAÇÃO DA ALTERAÇÃO")],
-        [sg.InputText(key='alt'),sg.Text("ALTERAÇÃO")],
+        [sg.InputText(key='linhaAlt', size=(30,10)),sg.Text("CLIENTE DA ALTERAÇÃO")],
+        [sg.InputOptionMenu(values=infos, default_value='COLUNA', size=(25,10),key='altcolum'),sg.Text("INFORMAÇÃO DA ALTERAÇÃO")],
+        [sg.InputText(key='alt', size=(30,10)),sg.Text("ALTERAÇÃO")],
         [sg.Button('ALTERAR')]
     ]
 
-    janelaAlt = sg.Window("LISTA CLIENTES", layoutAlt)
+    janelaAlt = sg.Window("ALTERAR INFORMAÇÃO", layoutAlt)
 
     while True:
         evento, valores = janelaAlt.read()

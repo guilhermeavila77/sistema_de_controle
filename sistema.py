@@ -1,5 +1,7 @@
 from tela_add import *
 import PySimpleGUI as sg
+import matplotlib.pyplot as plt
+
 
 def atualizar():
     # Variaveis globais
@@ -57,22 +59,35 @@ def atualizar():
     txtDesp = f'{txtdespesas}{namedesp}{com}{despanterior}'
     txtLuc = f'{txtlucro}{namelucro}{com}{lucroanterior}'
 
+
 atualizar()
 
 # cria a interface grafica
 sg.theme('LightBrown6')
 
-collun_center = [
-    [sg.Text("SISTEMA DE CONTROLE")],
-    [sg.Text("graficoFat"), sg.Text("graficoLuc")],
-    [sg.Button("ADD CLIENTE"), sg.Button("ALTERAR INFORMAÇÃO"),
-     sg.Button("EXCLUIR CLIENTE")],
-    [sg.Text(txtFat), sg.Text(txtDesp), sg.Text(txtLuc)]
+collun_left = [
+    [sg.Button("ADD CLIENTE", size=(20,2))],
+    [sg.Button("ALTERAR INFORMAÇÃO",  size=(20,2))],
+    [sg.Button("EXCLUIR CLIENTE",  size=(20,2))],
 ]
 
-layout = [[sg.VPush()],
-          [sg.Push(), sg.Column(collun_center, element_justification='c'), sg.Push()],
-          [sg.VPush()]]
+collun_center = [
+    [sg.Text("SISTEMA DE CONTROLE")],
+    [sg.Graph(canvas_size=(400, 400), graph_bottom_left=(0, 0), graph_top_right=(400, 400)), sg.Graph(
+        canvas_size=(400, 400), graph_bottom_left=(0, 0), graph_top_right=(400, 400))],
+]
+
+collun_right = [
+    [sg.Text(txtFat, size=(20,2))],
+    [sg.Text(txtDesp, size=(20,2))],
+    [sg.Text(txtLuc, size=(20,2))]
+]
+
+layout = [
+    [sg.Push(), sg.Column(collun_left, element_justification='l'),
+     sg.Column(collun_center, element_justification='c'),
+     sg.Column(collun_right, element_justification='c')],
+]
 
 janela = sg.Window("SISTEMA DE CONTROLE", layout)
 
@@ -88,6 +103,6 @@ while True:
         table()
 
     if evento == "ALTERAR INFORMAÇÃO":
-       alt()
+        alt()
 
 janela.close()
