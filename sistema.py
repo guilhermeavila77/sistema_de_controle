@@ -62,31 +62,43 @@ def atualizar():
 
 atualizar()
 
+largura = 0.5
+
+x = tabela['ESTADO']
+y = tabela['FATURAMENTO']
+
+grafico = [
+    plt.barh(x,y,largura)
+    plt.title('Titulo')
+    plt.xlabel('Titulo da base')
+    plt.ylabel('Titulo lateral')
+    grafico = plt.show()
+]
+
 # cria a interface grafica
-sg.theme('LightBrown6')
+sg.theme('DarkGrey')
 
 collun_left = [
-    [sg.Button("ADD CLIENTE", size=(20,2))],
-    [sg.Button("ALTERAR INFORMAÇÃO",  size=(20,2))],
-    [sg.Button("EXCLUIR CLIENTE",  size=(20,2))],
+    [sg.Button("ADD CLIENTE", size=(20, 2))],
+    [sg.Button("ALTERAR INFORMAÇÃO",  size=(20, 2))],
+    [sg.Button("EXCLUIR CLIENTE",  size=(20, 2))],
 ]
 
 collun_center = [
     [sg.Text("SISTEMA DE CONTROLE")],
-    [sg.Graph(canvas_size=(400, 400), graph_bottom_left=(0, 0), graph_top_right=(400, 400)), sg.Graph(
-        canvas_size=(400, 400), graph_bottom_left=(0, 0), graph_top_right=(400, 400))],
+    [sg.Image(filename=grafico,size=(400, 400),)]
 ]
 
 collun_right = [
-    [sg.Text(txtFat, size=(20,2))],
-    [sg.Text(txtDesp, size=(20,2))],
-    [sg.Text(txtLuc, size=(20,2))]
+    [sg.Text(txtFat, size=(20, 2))],
+    [sg.Text(txtDesp, size=(20, 2))],
+    [sg.Text(txtLuc, size=(20, 2))], 
 ]
 
 layout = [
     [sg.Push(), sg.Column(collun_left, element_justification='l'),
      sg.Column(collun_center, element_justification='c'),
-     sg.Column(collun_right, element_justification='c')],
+     sg.Column(collun_right, element_justification='c')]
 ]
 
 janela = sg.Window("SISTEMA DE CONTROLE", layout)
