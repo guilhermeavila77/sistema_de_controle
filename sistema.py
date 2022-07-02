@@ -1,6 +1,7 @@
 from tela_add import *
 import PySimpleGUI as sg
 import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 
 def atualizar():
@@ -59,21 +60,13 @@ def atualizar():
     txtDesp = f'{txtdespesas}{namedesp}{com}{despanterior}'
     txtLuc = f'{txtlucro}{namelucro}{com}{lucroanterior}'
 
-
 atualizar()
 
-largura = 0.5
-
-x = tabela['ESTADO']
-y = tabela['FATURAMENTO']
-
-grafico = [
-    plt.barh(x,y,largura)
-    plt.title('Titulo')
-    plt.xlabel('Titulo da base')
-    plt.ylabel('Titulo lateral')
-    grafico = plt.show()
-]
+def draw_figure(canvas, figure):
+    figure_canvas_agg = FigureCanvasTkAgg(figure, canvas)
+    figure_canvas_agg.draw()
+    figure_canvas_agg.get_tk_widget().pack(side='top', fill='both', expand=1)
+    return figure_canvas_agg
 
 # cria a interface grafica
 sg.theme('DarkGrey')
@@ -86,7 +79,7 @@ collun_left = [
 
 collun_center = [
     [sg.Text("SISTEMA DE CONTROLE")],
-    [sg.Image(filename=grafico,size=(400, 400),)]
+    [sg.Canvas(key='figCanvas')]
 ]
 
 collun_right = [
@@ -101,7 +94,21 @@ layout = [
      sg.Column(collun_right, element_justification='c')]
 ]
 
-janela = sg.Window("SISTEMA DE CONTROLE", layout)
+janela = sg.Window("SISTEMA DE CONTROLE", layout, finalize=True, resizable=True,element_justification='c')
+
+# \\  -------- PYPLOT -------- //
+
+# Make synthetic data
+dataSize = 1000
+xData = tabela['DATA']
+yData = tabela['FATURAMENTO']
+# make fig and plot
+fig = plt.figure()
+plt.bar(xData, yData, color = 'purple')
+# Instead of plt.show
+draw_figure(janela['figCanvas'].TKCanvas, fig)
+
+# \\  -------- PYPLOT -------- //
 
 while True:
     evento, valores = janela.read()
