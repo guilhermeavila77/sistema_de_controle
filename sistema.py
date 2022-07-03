@@ -89,7 +89,7 @@ collun_right = [
 ]
 
 layout = [
-    [sg.Push(), sg.Column(collun_left, element_justification='l'),
+    [sg.Column(collun_left, element_justification='l'),
      sg.Column(collun_center, element_justification='c'),
      sg.Column(collun_right, element_justification='c')]
 ]
@@ -104,7 +104,7 @@ xData = tabela['DATA']
 yData = tabela['FATURAMENTO']
 # make fig and plot
 fig = plt.figure()
-plt.bar(xData, yData, color = 'purple')
+plt.bar(xData, yData, color = 'g')
 # Instead of plt.show
 draw_figure(janela['figCanvas'].TKCanvas, fig)
 
