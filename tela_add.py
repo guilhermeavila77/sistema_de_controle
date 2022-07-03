@@ -156,3 +156,30 @@ def alt():
             janelaAlt.close()
 
     janelaAlt.close()
+
+
+def buscar():
+    filt_layout = [
+        [sg.InputCombo(('A', 'B', 'C', 'A&B', 'A&C', 'B&C'),
+                       default_value='CLASSIFICAÇÃO', size=(15, 1))],
+        [sg.InputCombo(('PESSOA FISICA', 'PESSOA JURIDICA', 'AMBOS'),
+                       default_value='PJ/PF', size=(15, 1))],
+        [sg.Button('BUSCAR')]
+    ]
+    result_layout = [
+        [sg.Text("LISTA CLIENTE")],
+        [sg.Listbox(tabela['NOME'], size=(20, 20))]
+    ]
+    layoutBusca = [
+        [sg.Column(filt_layout, element_justification='c'),
+         sg.Column(result_layout, element_justification='c')]
+    ]
+
+    janelaTable = sg.Window("BUSCA DE CLIENTES", layoutBusca)
+
+    while True:
+        evento, valores = janelaTable.read()
+        if evento == sg.WIN_CLOSED or evento == "VOLTAR":
+            break
+
+    janelaTable.close()

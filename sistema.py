@@ -60,13 +60,16 @@ def atualizar():
     txtDesp = f'{txtdespesas}{namedesp}{com}{despanterior}'
     txtLuc = f'{txtlucro}{namelucro}{com}{lucroanterior}'
 
+
 atualizar()
+
 
 def draw_figure(canvas, figure):
     figure_canvas_agg = FigureCanvasTkAgg(figure, canvas)
     figure_canvas_agg.draw()
     figure_canvas_agg.get_tk_widget().pack(side='top', fill='both', expand=1)
     return figure_canvas_agg
+
 
 # cria a interface grafica
 sg.theme('DarkGrey')
@@ -75,6 +78,7 @@ collun_left = [
     [sg.Button("ADD CLIENTE", size=(20, 2))],
     [sg.Button("ALTERAR INFORMAÇÃO",  size=(20, 2))],
     [sg.Button("EXCLUIR CLIENTE",  size=(20, 2))],
+    [sg.Button("BUSCA DE CLIENTES",  size=(20, 2))]
 ]
 
 collun_center = [
@@ -85,7 +89,7 @@ collun_center = [
 collun_right = [
     [sg.Text(txtFat, size=(20, 2))],
     [sg.Text(txtDesp, size=(20, 2))],
-    [sg.Text(txtLuc, size=(20, 2))], 
+    [sg.Text(txtLuc, size=(20, 2))],
 ]
 
 layout = [
@@ -94,7 +98,8 @@ layout = [
      sg.Column(collun_right, element_justification='c')]
 ]
 
-janela = sg.Window("SISTEMA DE CONTROLE", layout, finalize=True, resizable=True,element_justification='c')
+janela = sg.Window("SISTEMA DE CONTROLE", layout, finalize=True,
+                   resizable=True, element_justification='c')
 
 # \\  -------- PYPLOT -------- //
 
@@ -104,7 +109,7 @@ xData = tabela['DATA']
 yData = tabela['FATURAMENTO']
 # make fig and plot
 fig = plt.figure()
-plt.bar(xData, yData, color = 'g')
+plt.bar(xData, yData, color='g')
 # Instead of plt.show
 draw_figure(janela['figCanvas'].TKCanvas, fig)
 
@@ -123,5 +128,7 @@ while True:
 
     if evento == "ALTERAR INFORMAÇÃO":
         alt()
+    if evento == "BUSCA DE CLIENTES":
+        buscar()
 
 janela.close()
