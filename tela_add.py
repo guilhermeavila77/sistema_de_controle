@@ -160,15 +160,15 @@ def alt():
 
 def buscar():
     filt_layout = [
-        [sg.InputCombo(('A', 'B', 'C', 'A&B', 'A&C', 'B&C'),
-                       default_value='CLASSIFICAÇÃO', size=(15, 1))],
+        [sg.InputCombo(('A', 'B', 'C', 'A&B', 'A&C', 'B&C', 'A&B&C'),
+                       default_value='CLASSIFICAÇÃO', size=(15, 1), key='classes')],
         [sg.InputCombo(('PESSOA FISICA', 'PESSOA JURIDICA', 'AMBOS'),
-                       default_value='PJ/PF', size=(15, 1))],
+                       default_value='PJ/PF', size=(15, 1), key='pessoa')],
         [sg.Button('BUSCAR')]
     ]
     result_layout = [
         [sg.Text("LISTA CLIENTE")],
-        [sg.Listbox(tabela['NOME'], size=(20, 20))]
+        [sg.Listbox(tab['NOME'], size=(20, 20))]
     ]
     layoutBusca = [
         [sg.Column(filt_layout, element_justification='c'),
@@ -181,5 +181,10 @@ def buscar():
         evento, valores = janelaTable.read()
         if evento == sg.WIN_CLOSED or evento == "VOLTAR":
             break
+        if evento == "BUSCAR":
+            classe = str(valores['classes'])
+            pessoa = str(valores['pessoa'])
+            tab = tabela.loc[tabela['CLASSIFICAÇÃO']== classe & tabela['PJ/PF'] == pessoa]
+            
 
     janelaTable.close()
