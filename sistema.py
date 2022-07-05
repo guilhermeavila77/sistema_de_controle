@@ -10,6 +10,9 @@ def atualizar():
     caminho = "Base de de dados (1).xlsx"
     global tabela
     tabela = pd.read_excel(caminho)
+    tabela["LUCRO"] = tabela["FATURAMENTO"] - tabela["DESPESAS"]
+    tabela.to_excel(caminho, index=False)
+    tabela = pd.read_excel(caminho)
     global txtFat
     global txtDesp
     global txtLuc
@@ -104,12 +107,12 @@ janela = sg.Window("SISTEMA DE CONTROLE", layout, finalize=True,
 # \\  -------- PYPLOT -------- //
 
 # Make synthetic data
-dataSize = 1000
-xData = tabela['DATA']
+dataSize = 10000
+xData = tabela['ESTADO']
 yData = tabela['FATURAMENTO']
 # make fig and plot
 fig = plt.figure()
-plt.bar(xData, yData, color='g')
+plt.plot(xData, yData, 'g o')
 # Instead of plt.show
 draw_figure(janela['figCanvas'].TKCanvas, fig)
 

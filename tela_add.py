@@ -4,12 +4,13 @@ import PySimpleGUI as sg
 
 global caminho
 caminho = "Base de de dados (1).xlsx"
-global tabela
-tabela = pd.read_excel(caminho)
+global tabela1
+tabela1 = pd.read_excel(caminho)
 global lista
-lista = tabela['NOME']
+lista = tabela1['NOME']
 global infos
-infos = ['NOME', 'ESTADO', 'PAIS', 'FATURAMENTO', 'DESPESAS', 'DATA']
+infos = ['NOME', 'ESTADO', 'FATURAMENTO', 'DESPESAS', 'DATA',
+         'CPF/CNPJ', 'PJ/PF', 'TELEFONE', 'E-MAIL', 'CLASSIFICAÇÃO']
 
 
 def tela_add():
@@ -158,11 +159,30 @@ def alt():
     janelaAlt.close()
 
 
+def result_filt(classefilt, pessoafilt):
+    titulo = "LISTA DE CLIENTES (" + classefilt + ") " + pessoafilt
+    tab = tabela1.loc[(tabela1['CLASSIFICAÇÃO'] == classefilt) & (
+        tabela1['PJ/PF'] == pessoafilt)]
+    tab_layout = [
+        [sg.Text(titulo)],
+        [sg.Listbox(tab['NOME'], size=(20, 20))]
+    ]
+    janelaFilt = sg.Window("BUSCA DE CLIENTES",
+                           tab_layout, element_justification='c')
+
+    while True:
+        evento, valores = janelaFilt.read()
+        if evento == sg.WIN_CLOSED:
+            break
+    janelaFilt.close()
+
+
 def buscar():
+    tab = tabela1
     filt_layout = [
-        [sg.InputCombo(('A', 'B', 'C', 'A&B', 'A&C', 'B&C', 'A&B&C'),
+        [sg.InputCombo(('A', 'B', 'C'),
                        default_value='CLASSIFICAÇÃO', size=(15, 1), key='classes')],
-        [sg.InputCombo(('PESSOA FISICA', 'PESSOA JURIDICA', 'AMBOS'),
+        [sg.InputCombo(('PESSOA FISICA', 'PESSOA JURIDICA'),
                        default_value='PJ/PF', size=(15, 1), key='pessoa')],
         [sg.Button('BUSCAR')]
     ]
@@ -184,7 +204,6 @@ def buscar():
         if evento == "BUSCAR":
             classe = str(valores['classes'])
             pessoa = str(valores['pessoa'])
-            tab = tabela.loc[tabela['CLASSIFICAÇÃO']== classe & tabela['PJ/PF'] == pessoa]
-            
+            result_filt(classe, pessoa)
 
     janelaTable.close()
